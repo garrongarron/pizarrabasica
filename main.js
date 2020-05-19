@@ -18,6 +18,9 @@ socket.on('connect', function() {
 socket.on('new message', function (data) {
     console.log(data);
     if(data.username == 'profe'){
+        if(isAction(data)){
+            document.getElementById(data.message.id).remove()
+        }
         console.log(data.message);
         let copy = document.getElementById(data.message.id);
         if(copy==null){
@@ -27,11 +30,21 @@ socket.on('new message', function (data) {
         copy.style.left = data.message.x+'px'
         copy.style.top = data.message.y+'px'
         copy.innerText = data.message.text
-        say( data.message.text)
-        document.body.appendChild(copy);
+        if(typeof data.message.text !== 'undefined'){
+            
+            if(Object.keys(data.message).includes('voice')){
+                say( data.message.text)
+            }
+            document.body.appendChild(copy);
+        }
+        
     }
 });
 
+
+let isAction = (data) => {
+    return Object.keys(data.message).includes('action');
+}
 
   
   

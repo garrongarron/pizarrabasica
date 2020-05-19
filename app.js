@@ -55,6 +55,7 @@ let stop = () => {
         y:cursor.y,
         text:current.innerText
     }
+    data = voiceProcess(data)
     socket.emit('new message', data);
     current = null
     console.log('stop')
@@ -67,6 +68,11 @@ let keyup = (e) => {
         let layer = document.querySelector('li[span-id="'+current.id+'"]')
         current.remove()
         layer.remove()
+        let data = {
+            id:current.id,
+            action:'remove'
+        }
+        socket.emit('new message', data);
         current = null
     }
     let text = e.keyCode-48;
@@ -84,10 +90,23 @@ let keyup = (e) => {
     
 
 }
+let voiceProcess = (data) => {
+
+    if(document.querySelector('button.voice').classList.contains('active')){
+        data.voice = true
+    }
+    return data
+}
+let voiceToggle = (e) => {
+    e.target.classList.toggle('active')
+}
 document.addEventListener('mouseup', stop)
 document.addEventListener('mousemove', move)
 document.addEventListener('keydown', keyup)
 let startValue = (e) => {
-    create(e.target.value)
+    let text = document.querySelector('input').value
+    create(text)
+    document.querySelector('input').value = ''
 }
-document.querySelector('input').addEventListener('mousedown', startValue)
+document.querySelector('button.drag').addEventListener('mousedown', startValue)
+document.querySelector('button.voice').addEventListener('click', voiceToggle)

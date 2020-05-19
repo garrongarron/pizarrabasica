@@ -4,8 +4,34 @@ body{
 }
 input{
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 53px;
+    height: 30px;
+    border: none;
+    padding: 0 .5em;
+    margin: 0;
+    display: block;
+}
+button.drag, button.voice{
+    color: white;
+    background-color: red;
+    position: fixed;
+    bottom: 10px;
+    right: 1em;
+    height: 30px;
+    width: 40px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    display: block;
+}
+button.voice{
+    background-color: blue;
+    bottom: 40px;
+    color: gray;
+}
+button.active{
+    color: honeydew;
 }
 ul{
     list-style: none;
