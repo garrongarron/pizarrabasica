@@ -28,7 +28,6 @@ class WritterKey
     }
 
     start(){
-        Mouse.start()
         Key.addListener(48,()=> this.stick('0'))
         Key.addListener(49,()=> this.stick('1'))
         Key.addListener(50,()=> this.stick('2'))

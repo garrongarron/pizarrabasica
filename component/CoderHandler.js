@@ -1,4 +1,5 @@
 import Storage from './LocalStorage.js'
+import History from './HistoryHandler.js'
 
 class CoderHandler
 {
@@ -12,6 +13,7 @@ class CoderHandler
         let elements = Storage.getLocal('history');
         elements[current.id] = element
         Storage.setLocal('history',elements);
+        History.setHistory()
         console.log(elements)
     }
 }
