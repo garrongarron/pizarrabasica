@@ -1,11 +1,22 @@
 import Mouse from './MouseHandler.js'
 import Coder from './CoderHandler.js'
+import Key from './KeyHandler.js'
+import History from './HistoryHandler.js'
 
 class DomElementHandler
 {
     constructor(){
         document.addEventListener('mouseup', this.stop)
         Mouse.current = null
+        Key.addListener(46, ()=>this.delete())
+    }
+
+    delete(){
+        if(Mouse.current !== null){
+            History.delete(Mouse.current)
+            Mouse.current.remove()
+            Mouse.current = null
+        }
     }
 
     addClickListener(element){

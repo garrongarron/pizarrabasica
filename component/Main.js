@@ -25,7 +25,6 @@ class Main
         
         let callback = content => {
             Storage.setLocal('history',JSON.parse(content) )
-            History.setHistory()
         }
         Import.onChange('[id=up]', callback)
 

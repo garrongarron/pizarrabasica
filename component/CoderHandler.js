@@ -1,5 +1,7 @@
 import Storage from './LocalStorage.js'
 import History from './HistoryHandler.js'
+import Insert from './InsertHandler.js'
+
 
 class CoderHandler
 {
@@ -10,11 +12,8 @@ class CoderHandler
             content:current.innerText,
             id:current.id
         }
-        let elements = Storage.getLocal('history');
-        elements[current.id] = element
-        Storage.setLocal('history',elements);
-        History.setHistory()
-        console.log(elements)
+        let elements = Insert.start(element)
+        // console.log(elements)
     }
 }
 const Coder = new CoderHandler();

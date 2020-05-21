@@ -2,6 +2,8 @@ import Mouse from './MouseHandler.js'
 import Key from './KeyHandler.js'
 import Coder from './CoderHandler.js'
 import Storage from './LocalStorage.js'
+import History from './HistoryHandler.js'
+import Insert from './InsertHandler.js'
 
 class WritterKey
 {
@@ -16,7 +18,7 @@ class WritterKey
             }
             return size;
         };
-        this.idMax = Object.size(elements)
+        this.idMax = Object.size(elements)//deprecated
 
     }
     setElementHandler(elementHandler){
@@ -40,10 +42,21 @@ class WritterKey
         Key.addListener(57,()=> this.stick('9'))
     }
 
+    getUnixTime(){
+        return Math.round(new Date().getTime()/100);
+    }
+
     stick(content){
+        if(!Insert.isInsertMode()){
+            if(!History.isLast()) {
+                alert('Press [Right Key] "→", there are more content into the history')
+                return 
+            }
+        }
+        
         if(Mouse.moveSubscriber == null){
             this.current = document.createElement('span')
-            this.current.id = this.idMax++
+            this.current.id = this.getUnixTime()
             this.elementHandler.addClickListener(this.current)
         }
         this.current.innerText = content
@@ -61,6 +74,8 @@ class WritterKey
             Mouse.setMoveSubscriber(null)
             this.curren = null
             Mouse.setDownSubscriber(null)
+            
+            History.keepGoing()
         })
         this.current.style.left = Mouse.cursor.x+'px'
         this.current.style.top = Mouse.cursor.y+'px'
