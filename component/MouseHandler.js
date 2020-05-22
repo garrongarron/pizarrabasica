@@ -3,23 +3,42 @@ class MouseHandler
     constructor(){
         this.cursor = {x:0,y:0}
         this.moveSubscriber = null
-        this.downSubscriber = null
+        this.fontSize = 15
+        
     }
 
-    start(){
+    setFontSize(size){
+        this.fontSize = size
+    }
+
+    start(size){
+        Mouse.setFontSize(size)
         document.addEventListener('mousemove', Mouse.move)
         document.addEventListener('mousedown', Mouse.down)
+        document.addEventListener('mouseup', Mouse.up)
     }
 
     setMoveSubscriber(subscriber){
         Mouse.moveSubscriber = subscriber
     }
+
+    setUpSubscriber(subscriber){
+        Mouse.upSubscriber = subscriber
+    }
+
     setDownSubscriber(subscriber){
         Mouse.downSubscriber = subscriber
     }
 
+    up(e){
+        if (Mouse.upSubscriber== null) {
+            return
+        } else {
+            Mouse.upSubscriber()
+        }
+    }
+
     down(e){
-        e.preventDefault()
         if (Mouse.downSubscriber== null) {
             return
         } else {
@@ -28,7 +47,7 @@ class MouseHandler
     }
     
     move(e){
-        let unit = 10
+        let unit = Mouse.fontSize
         Mouse.cursor.y = Math.round(e.clientY/unit)*unit -15
         Mouse.cursor.x = Math.round(e.clientX/unit)*unit -10
         // console.log(Mouse.moveSubscriber)

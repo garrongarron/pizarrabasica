@@ -18,6 +18,10 @@ class InsertHandler
         return document.querySelector('[id="insert"]').checked 
     }
 
+    notAllowMessage(){
+        alert('Press [Ctrl]+[Right Key] CTRL+"→", there are more content into the history')
+    }
+
     start(element){
         if(!document.querySelector('[id="insert"]').checked ){
             this.insertAtLast(element)

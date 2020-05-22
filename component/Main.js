@@ -8,6 +8,7 @@ import Mouse from './MouseHandler.js'
 import Writter from './WritterKey.js'
 import Element from './DomElementHandler.js'
 import Storage from './LocalStorage.js'
+import Input from './InputHandler.js' // do not delete this line
 
 
 class Main
@@ -15,16 +16,19 @@ class Main
     run(){
 
         Key.addListener(27, ()=>console.log('ESC'))
-        Mouse.start()
+        Mouse.start(10)
         Writter.start()//teclado por defecto
-        Writter.setElementHandler(Element)
         History.start()
         Export.onClick('.export', () => {
             return JSON.stringify(Storage.getLocal('history'))
         })
         
+        
+        
         let callback = content => {
+            History.cleanScreen()
             Storage.setLocal('history',JSON.parse(content) )
+            History.printAll()
         }
         Import.onChange('[id=up]', callback)
 

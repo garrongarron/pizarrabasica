@@ -4,6 +4,8 @@ import Coder from './CoderHandler.js'
 import Storage from './LocalStorage.js'
 import History from './HistoryHandler.js'
 import Insert from './InsertHandler.js'
+import Element from './DomElementHandler.js'
+
 
 class WritterKey
 {
@@ -49,7 +51,7 @@ class WritterKey
     stick(content){
         if(!Insert.isInsertMode()){
             if(!History.isLast()) {
-                alert('Press [Right Key] "→", there are more content into the history')
+                Insert.notAllowMessage()
                 return 
             }
         }
@@ -57,7 +59,8 @@ class WritterKey
         if(Mouse.moveSubscriber == null){
             this.current = document.createElement('span')
             this.current.id = this.getUnixTime()
-            this.elementHandler.addClickListener(this.current)
+            Element.stikOnMouseUp(this.current)
+            // this.elementHandler.addClickListener(this.current)
         }
         this.current.innerText = content
         Mouse.setMoveSubscriber(() =>{

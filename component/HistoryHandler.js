@@ -15,6 +15,30 @@ class HistoryHandler
             return size;
         };
     }
+
+    cleanScreen(){
+        let elements = Storage.getLocal('history')
+        for (const key in elements) {
+            if (elements.hasOwnProperty(key)) {
+                let e = document.querySelector('[id="'+key+'"]')
+                if(e !== null){
+                    e.remove()
+                }
+            }
+        }
+        History.cursor = -1
+    }
+
+    printAll(){
+        let elements = Storage.getLocal('history')
+        for (const key in elements) {
+            if (elements.hasOwnProperty(key)) {
+                History.next()
+            }
+        }
+        
+    }
+
     delete(element){
         let history = Storage.getLocal('history')
         delete history[element.id]
@@ -22,6 +46,9 @@ class HistoryHandler
     }
    
     back(){
+        if(Key.keyPressed[17]!== true){//control
+            return
+        }
         if(History.cursor<0){
             return
         }
@@ -30,6 +57,13 @@ class HistoryHandler
         element.remove();
     }
     ahead(){
+        if(Key.keyPressed[17]!== true){//control
+            return
+        }
+        History.next()
+    }
+
+    next(){
         let HISTORY = Storage.getLocal('history')
         if(History.cursor > Object.size(HISTORY) -2){
             return

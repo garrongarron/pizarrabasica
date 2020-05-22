@@ -8,18 +8,31 @@ class DomElementHandler
     constructor(){
         document.addEventListener('mouseup', this.stop)
         Mouse.current = null
-        Key.addListener(46, ()=>this.delete())
+        Key.addListener(8, ()=>this.delete())
     }
 
     delete(){
         if(Mouse.current !== null){
             History.delete(Mouse.current)
+            History.cursor--
             Mouse.current.remove()
             Mouse.current = null
         }
     }
 
     addClickListener(element){
+        element.addEventListener('mousedown', (e)=>{
+            Element.move(e.target)
+        })
+    }
+    stikOnMouseUp(element){
+        // element = null
+        Mouse.setMoveSubscriber(null)
+        // element.addEventListener('mousedoup', (e)=>{
+        //     Element.move(e.target)
+        // })
+    }
+    stikOnMouseDown(element){
         element.addEventListener('mousedown', (e)=>{
             Element.move(e.target)
         })
