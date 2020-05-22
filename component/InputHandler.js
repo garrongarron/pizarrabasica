@@ -4,7 +4,7 @@ import Mouse from './MouseHandler.js'
 import Element from './DomElementHandler.js'
 import Coder from './CoderHandler.js'
 import Key from './KeyHandler.js'
-
+import Font from './FontSize.js'
 
 class InputHandler
 {
@@ -18,12 +18,12 @@ class InputHandler
         input.focus()
         input.addEventListener('focus', this.focus )
         input.addEventListener('blur', this.blur )
-        document.body.appendChild(input)
+        document.querySelector('aside').appendChild(input)
 
         // <button class="export">Exp</button>
         let btn = document.createElement('button')
         btn.innerText = 'Drag'
-        document.body.appendChild(btn)
+        document.querySelector('aside').appendChild(btn)
         btn.addEventListener('mousedown', this.float)
         
     }
@@ -45,6 +45,7 @@ class InputHandler
         if(Mouse.moveSubscriber == null){
             this.current = document.createElement('span')
             this.current.id = Math.round(new Date().getTime()/100);
+            this.current.style.fontSize = Font.getSize()+'px'
             this.current.innerText = Input.input.value
             
             Element.stikOnMouseUp(this.current)
@@ -57,6 +58,7 @@ class InputHandler
         Mouse.setUpSubscriber(()=>{
             Mouse.setMoveSubscriber(null)
             Coder.start(this.current)
+            Element.addClickListener(this.current)
             History.keepGoing()
         })
         this.current.style.left = Mouse.cursor.x+'px'

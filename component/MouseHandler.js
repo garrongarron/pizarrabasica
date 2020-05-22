@@ -1,18 +1,21 @@
+import Scroll from './ScrollHandler.js' 
+import Font from './FontSize.js'
+
 class MouseHandler
 {
     constructor(){
         this.cursor = {x:0,y:0}
         this.moveSubscriber = null
-        this.fontSize = 15
+        this.grid = 8
         
     }
 
-    setFontSize(size){
-        this.fontSize = size
+    setGrid(size){
+        this.grid = size
     }
 
     start(size){
-        Mouse.setFontSize(size)
+        // Mouse.setGrid(size)
         document.addEventListener('mousemove', Mouse.move)
         document.addEventListener('mousedown', Mouse.down)
         document.addEventListener('mouseup', Mouse.up)
@@ -45,11 +48,19 @@ class MouseHandler
             Mouse.downSubscriber()
         }
     }
+
+    scroll(){
+        let scroll = Scroll.getScroll()
+        Mouse.cursor.x += scroll.x 
+        Mouse.cursor.y += scroll.y 
+        
+    }
     
     move(e){
-        let unit = Mouse.fontSize
-        Mouse.cursor.y = Math.round(e.clientY/unit)*unit -15
-        Mouse.cursor.x = Math.round(e.clientX/unit)*unit -10
+        let unit = Mouse.grid        
+        Mouse.cursor.x = Math.round((e.clientX - Font.getSize()/4)/unit)*unit -10 
+        Mouse.cursor.y = Math.round((e.clientY - Font.getSize()*.75)/unit)*unit 
+        Mouse.scroll()
         // console.log(Mouse.moveSubscriber)
         if (Mouse.moveSubscriber== null) {
             return

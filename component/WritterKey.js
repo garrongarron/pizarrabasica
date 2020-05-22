@@ -5,7 +5,7 @@ import Storage from './LocalStorage.js'
 import History from './HistoryHandler.js'
 import Insert from './InsertHandler.js'
 import Element from './DomElementHandler.js'
-
+import Font from './FontSize.js'
 
 class WritterKey
 {
@@ -58,8 +58,10 @@ class WritterKey
         
         if(Mouse.moveSubscriber == null){
             this.current = document.createElement('span')
+            this.current.style.fontSize = Font.getSize()+'px'
             this.current.id = this.getUnixTime()
             Element.stikOnMouseUp(this.current)
+            
             // this.elementHandler.addClickListener(this.current)
         }
         this.current.innerText = content
@@ -73,7 +75,7 @@ class WritterKey
             }
 
             Coder.start(this.current)
-
+            Element.addClickListener(this.current)
             Mouse.setMoveSubscriber(null)
             this.curren = null
             Mouse.setDownSubscriber(null)

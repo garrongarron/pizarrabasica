@@ -10,7 +10,8 @@ class CoderHandler
             x:current.style.left.replace('px',''),
             y:current.style.top.replace('px',''),
             content:current.innerText,
-            id:current.id
+            id:current.id,
+            size:current.style.fontSize.replace('px','')
         }
         let elements = Insert.start(element)
         // console.log(elements)

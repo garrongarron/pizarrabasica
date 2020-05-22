@@ -2,6 +2,7 @@ import Storage from './LocalStorage.js'
 import Key from './KeyHandler.js'
 import Coder from './CoderHandler.js'
 import Element from './DomElementHandler.js'
+import Input from './InputHandler.js'
 
 class HistoryHandler
 {
@@ -54,6 +55,7 @@ class HistoryHandler
         }
         let arr = Object.entries(Storage.getLocal('history'))
         let element = document.querySelector(`[id='${arr[History.cursor--][0]}']`)
+        Input.input.value = ''
         element.remove();
     }
     ahead(){
@@ -70,11 +72,14 @@ class HistoryHandler
         }
         let arr = Object.entries(HISTORY)
         let element = document.createElement('span')
-        element.innerHTML = arr[++History.cursor][1].content
+        element.innerText = arr[++History.cursor][1].content
+        Input.input.value = element.innerText
         element.id = arr[History.cursor][0]
         element.style.left = arr[History.cursor][1].x+'px'
         element.style.top = arr[History.cursor][1].y+'px' 
-        element.style.color = 'blue' 
+        element.style.color = 'white' 
+        let size = arr[History.cursor][1].size || 15
+        element.style.fontSize = size+'px'  
         document.body.appendChild(element)
 
         Element.addClickListener(element)

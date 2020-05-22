@@ -2,6 +2,8 @@ import Mouse from './MouseHandler.js'
 import Coder from './CoderHandler.js'
 import Key from './KeyHandler.js'
 import History from './HistoryHandler.js'
+import Font from './FontSize.js'
+
 
 class DomElementHandler
 {
@@ -26,11 +28,7 @@ class DomElementHandler
         })
     }
     stikOnMouseUp(element){
-        // element = null
         Mouse.setMoveSubscriber(null)
-        // element.addEventListener('mousedoup', (e)=>{
-        //     Element.move(e.target)
-        // })
     }
     stikOnMouseDown(element){
         element.addEventListener('mousedown', (e)=>{
@@ -51,6 +49,7 @@ class DomElementHandler
 
     move(current){
         Mouse.current = current
+        Font.setSize(Mouse.current.style.fontSize.replace('px',''))
         Mouse.setMoveSubscriber(() => {
             current.style.left = Mouse.cursor.x+'px'
             current.style.top = Mouse.cursor.y+'px'  

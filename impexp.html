@@ -13,22 +13,53 @@
             user-select: none;
             width: max-content;
         }
+        i{
+            /* position: fixed;
+            right: 0;
+            top: 0;  */
+            /* float: left; */
+        }
         body{
             overflow: scroll;
             width: 2000px;
             height: 2000px;
+            /* background-color: green; */
+            background-image: linear-gradient(to bottom right, green, #255523, rgb(43, 65, 29),#000000);
+            background-size: 2000px 2000px;
+            padding: 0;
+            margin: 0;
+
+        }
+        aside{
+            background-color: hotpink;
+            margin: 1em 1em;
+            padding: .5em 1em;
+            box-sizing: border-box;
+            display: inline-block;
+            position: fixed;
+            /* opacity: 0.5; */
+        }
+        cite{
+            background-color: white;
+            padding: 2em;
+            position: fixed;
+            bottom: 0;
+            right: 0;
         }
     </style>
 </head>
 <body>
-    <input type="checkbox" id="insert" name="insert" value="true" style="display: none;">
-    <label for="insert"> Ins</label>
-    <button class="export">Exp</button>
-    <button class="import">
-        <label htmlFor="up" className="btn btn-primary btn-block btn-outlined">
-            Imp<input id="up" type='file' style="display: none;" accept='text/plain' onChange=''/>
-        </label>
-    </button>
+    <aside>
+        <input type="checkbox" id="insert" name="insert" value="true" style="display: none;">
+        <label for="insert"> Ins</label>
+        <button class="export">Exp</button>
+        <button class="import">
+            <label htmlFor="up" className="btn btn-primary btn-block btn-outlined">
+                Imp<input id="up" type='file' style="display: none;" accept='text/plain' onChange=''/>
+            </label>
+        </button>
+    </aside>
+    <cite>History [CTRL]+[Rigt Arrow] keys</cite>
 </body>
 <script type="module" src="component/Main.js"></script>
 </html>
