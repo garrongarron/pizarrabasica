@@ -32,23 +32,30 @@ class WritterKey
     }
 
     start(){
-        Key.addListener(48,()=> this.stick('0'))
-        Key.addListener(49,()=> this.stick('1'))
-        Key.addListener(50,()=> this.stick('2'))
-        Key.addListener(51,()=> this.stick('3'))
-        Key.addListener(52,()=> this.stick('4'))
-        Key.addListener(53,()=> this.stick('5'))
-        Key.addListener(54,()=> this.stick('6'))
-        Key.addListener(55,()=> this.stick('7'))
-        Key.addListener(56,()=> this.stick('8'))
-        Key.addListener(57,()=> this.stick('9'))
+
+        // from 0 to 9
+        for (let index = 48; index <= 57; index++) {
+            Key.addListener(index,()=> this.stick(index))
+        }
+
+
+        //from a to z
+        for (let index = 65; index <= 90; index++) {
+            Key.addListener(index,()=> this.stick(index))
+        }
+
+
+    
     }
 
-    getUnixTime(){
-        return Math.round(new Date().getTime()/100);
-    }
 
-    stick(content){
+    stick(keyCode){
+        let content =  String.fromCharCode(keyCode)
+        let node = document.querySelector(`[id=btn-${content.toLowerCase()}]`)
+        if(node == null){
+            return
+        }
+        content = node.innerText[0] 
         if(!Insert.isInsertMode()){
             if(!History.isLast()) {
                 Insert.notAllowMessage()
@@ -58,30 +65,37 @@ class WritterKey
         
         if(Mouse.moveSubscriber == null){
             this.current = document.createElement('span')
+            this.current.id = Math.round(new Date().getTime()/100)
             this.current.style.fontSize = Font.getSize()+'px'
-            this.current.id = this.getUnixTime()
-            Element.stikOnMouseUp(this.current)
-            
+            this.current.style.color = 'white'
+            // Element.stikOnMouseUp(this.current)//Mouse.setMoveSubscriber(null)
             // this.elementHandler.addClickListener(this.current)
         }
-        this.current.innerText = content
+        
         Mouse.setMoveSubscriber(() =>{
             this.current.style.left = Mouse.cursor.x+'px'
             this.current.style.top = Mouse.cursor.y+'px'  
         })
+
+
         Mouse.setDownSubscriber(()=>{
+
             if(Mouse.moveSubscriber == null){
                 return
             }
 
-            Coder.start(this.current)
-            Element.addClickListener(this.current)
-            Mouse.setMoveSubscriber(null)
-            this.curren = null
-            Mouse.setDownSubscriber(null)
+            Coder.start(this.current)//-2
+            Element.addClickListener(this.current)//-1
             
-            History.keepGoing()
+
+            //clear
+            this.curren = null//1
+            Mouse.setMoveSubscriber(null)//2
+            Mouse.setDownSubscriber(null)//3
+            History.keepGoing()//4
         })
+        this.current.innerText = content
+        
         this.current.style.left = Mouse.cursor.x+'px'
         this.current.style.top = Mouse.cursor.y+'px'
         document.body.appendChild(this.current)

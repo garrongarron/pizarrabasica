@@ -6,7 +6,17 @@ class FontSize
         this.sizes = [10, 15, 22, 33, 50, 75, 112 ,168]
         this.fontSize = 1
         this.buttons = {}
+
+        let smaller = document.createElement('button')
+        smaller.innerText = 'A-'
+        document.querySelector('aside').appendChild(smaller)
+        smaller.addEventListener('mousedown', this.smaller)
         
+
+        let bigger = document.createElement('button')
+        bigger.innerText = 'A+'
+        document.querySelector('aside').appendChild(bigger)
+        bigger.addEventListener('mousedown', this.bigger)
     }
 
     getSize(){
@@ -48,14 +58,14 @@ class FontSize
             }
         }
         Font.buttons[Font.sizes[Font.fontSize]].style.color = 'yellow'
-        Font.buttons[Font.sizes[Font.fontSize]].style.display = 'block'
+        Font.buttons[Font.sizes[Font.fontSize]].style.display = 'inline'
     }
 
     start(){
         Font.sizes.forEach(element => {
             Font.buttons[element] = document.createElement('i')
             Font.buttons[element].innerText = ' '+element
-            Font.buttons[element].style.fontSize = element+'px'
+            // Font.buttons[element].style.fontSize = element+'px'
             document.querySelector('aside').appendChild(Font.buttons[element])
         });
         // console.log(Font.buttons[Font.sizes[1]].style.color = 'red') 

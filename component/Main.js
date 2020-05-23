@@ -10,7 +10,8 @@ import Element from './DomElementHandler.js'
 import Storage from './LocalStorage.js'
 import Input from './InputHandler.js' // do not delete this line
 import Font from './FontSize.js' // do not delete this line
-
+import Clone from './CloneButtons.js' // do not delete this line
+import Console from './ConsoleMonitor.js' // do not delete this line
 
 
 class Main
@@ -25,6 +26,7 @@ class Main
             return JSON.stringify(Storage.getLocal('history'))
         })
         Font.start()
+
         
         
         let callback = content => {

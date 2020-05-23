@@ -15,6 +15,17 @@ class HistoryHandler
             }
             return size;
         };
+
+
+        let back = document.createElement('button')
+        back.innerText = '←'
+        document.querySelector('aside').appendChild(back)
+        back.addEventListener('mousedown', this.prev)
+
+        let ahead = document.createElement('button')
+        ahead.innerText = '→'
+        document.querySelector('aside').appendChild(ahead)
+        ahead.addEventListener('mousedown', this.next)
     }
 
     cleanScreen(){
@@ -50,14 +61,20 @@ class HistoryHandler
         if(Key.keyPressed[17]!== true){//control
             return
         }
+        History.prev()
+    }
+    prev(){
+
         if(History.cursor<0){
             return
         }
         let arr = Object.entries(Storage.getLocal('history'))
-        let element = document.querySelector(`[id='${arr[History.cursor--][0]}']`)
+        let id = `[id='${arr[History.cursor--][0]}']`
+        let element = document.querySelector(id)
         Input.input.value = ''
         element.remove();
     }
+
     ahead(){
         if(Key.keyPressed[17]!== true){//control
             return
@@ -81,7 +98,6 @@ class HistoryHandler
         let size = arr[History.cursor][1].size || 15
         element.style.fontSize = size+'px'  
         document.body.appendChild(element)
-
         Element.addClickListener(element)
     }
 

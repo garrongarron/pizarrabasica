@@ -6,7 +6,7 @@ class MouseHandler
     constructor(){
         this.cursor = {x:0,y:0}
         this.moveSubscriber = null
-        this.grid = 8
+        this.grid = 5
         
     }
 
@@ -15,10 +15,9 @@ class MouseHandler
     }
 
     start(size){
-        // Mouse.setGrid(size)
         document.addEventListener('mousemove', Mouse.move)
         document.addEventListener('mousedown', Mouse.down)
-        document.addEventListener('mouseup', Mouse.up)
+        document.addEventListener('mouseup', Mouse.up)//
     }
 
     setMoveSubscriber(subscriber){
@@ -61,7 +60,6 @@ class MouseHandler
         Mouse.cursor.x = Math.round((e.clientX - Font.getSize()/4)/unit)*unit -10 
         Mouse.cursor.y = Math.round((e.clientY - Font.getSize()*.75)/unit)*unit 
         Mouse.scroll()
-        // console.log(Mouse.moveSubscriber)
         if (Mouse.moveSubscriber== null) {
             return
         } else {

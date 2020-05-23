@@ -1,0 +1,57 @@
+#console-monitor{
+    color: gray;
+    position: fixed;
+    right: 1em;
+    top: 1em;
+    /* width: 15em; */
+    display: block;
+    background-color: #cccccc;
+    padding: 1em;
+    border-radius: 15px;
+    word-break: break-all;
+    font-size: .8em;
+    text-align: right;
+
+}
+
+#console-monitor button{
+    padding: .05em;
+}
+
+.red{
+    color: red;
+}
+#console-monitor .id{
+    display: none;
+}
+#console-monitor .id::before{
+    content: 'id: ';
+}
+
+#console-monitor .content::before{
+    content: 'content: ';
+}
+
+#console-monitor .x::before{
+    content: 'x: ';
+}
+
+#console-monitor .y::before{
+    content: 'y: ';
+}
+
+#console-monitor .x::after{
+    content: 'px';
+}
+
+#console-monitor .y::after{
+    content: 'px';
+}
+
+
+#console-monitor .size::before{
+    content: 'size: ';
+}
+#console-monitor .size::after{
+    content: 'px';
+}

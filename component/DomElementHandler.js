@@ -8,7 +8,6 @@ import Font from './FontSize.js'
 class DomElementHandler
 {
     constructor(){
-        document.addEventListener('mouseup', this.stop)
         Mouse.current = null
         Key.addListener(8, ()=>this.delete())
     }
@@ -18,6 +17,7 @@ class DomElementHandler
             History.delete(Mouse.current)
             History.cursor--
             Mouse.current.remove()
+            Mouse.setUpSubscriber(null)
             Mouse.current = null
         }
     }
@@ -25,10 +25,19 @@ class DomElementHandler
     addClickListener(element){
         element.addEventListener('mousedown', (e)=>{
             Element.move(e.target)
+            Mouse.setUpSubscriber(()=>{
+                Element.stikOnMouseUp()
+            })
+            Font.setSize(Mouse.current.style.fontSize.replace('px',''))
         })
+        
     }
-    stikOnMouseUp(element){
-        Mouse.setMoveSubscriber(null)
+    stikOnMouseUp(){
+        if(Mouse.current !== null){
+            Mouse.setMoveSubscriber(null)
+            Coder.start(Mouse.current)
+            Mouse.current = null
+        }
     }
     stikOnMouseDown(element){
         element.addEventListener('mousedown', (e)=>{
@@ -36,23 +45,14 @@ class DomElementHandler
         })
     }
 
-    stop(){
+    
 
-        if(Mouse.current !== null){
-            Mouse.setMoveSubscriber(null)
-            Coder.start(Mouse.current)
-            
-            Mouse.current = null
-        }
-        
-    }
 
     move(current){
         Mouse.current = current
-        Font.setSize(Mouse.current.style.fontSize.replace('px',''))
-        Mouse.setMoveSubscriber(() => {
-            current.style.left = Mouse.cursor.x+'px'
-            current.style.top = Mouse.cursor.y+'px'  
+        Mouse.setMoveSubscriber(() => {//###4
+            Mouse.current.style.left = Mouse.cursor.x+'px'
+            Mouse.current.style.top = Mouse.cursor.y+'px'  
         })
     }
 }

@@ -1,0 +1,38 @@
+/* #clone-buttons{
+    background-color: #333333;
+    border: 2px solid yellow;
+    border-radius: 5px;
+    padding: .5em;
+    color: honeydew;
+    position: fixed;
+    bottom: 1em;
+    text-align: right;
+    user-select: none;
+} */
+
+#clone-buttons{
+    background-color: #333333;
+    border: 2px solid yellow;
+    border-radius: 5px;
+    padding: .5em;
+    color: honeydew;
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+    text-align: right;
+    user-select: none;
+    width: 60%;
+    overflow: auto;
+}
+#clone-buttons > div{
+    display: flex;
+    justify-content: space-between;
+    
+}
+#clone-buttons > div > div{
+    text-align: center;
+    /* border: 1px solid red; */
+}
+b{
+    color: yellow
+}
