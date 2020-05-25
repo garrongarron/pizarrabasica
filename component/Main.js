@@ -12,6 +12,7 @@ import Input from './InputHandler.js' // do not delete this line
 import Font from './FontSize.js' // do not delete this line
 import Clone from './CloneButtons.js' // do not delete this line
 import Console from './ConsoleMonitor.js' // do not delete this line
+import Graphics from './Graphics.js' // do not delete this line
 
 
 class Main
@@ -22,6 +23,7 @@ class Main
         Mouse.start()
         Writter.start()//teclado por defecto
         History.start()
+        Graphics.start()
         Export.onClick('.export', () => {
             return JSON.stringify(Storage.getLocal('history'))
         })
