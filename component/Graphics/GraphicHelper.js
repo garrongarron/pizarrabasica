@@ -8,6 +8,7 @@ class GraphicHelper
         this.canvas.style.position = 'fixed'
         this.canvas.style.display = 'none'
         this.canvas.style.zIndex = 1
+        this.canvas.id = 'canvasTpm'
         this.canvas.width = 2000
         this.canvas.height = 2000
         document.body.appendChild(this.canvas)

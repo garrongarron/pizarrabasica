@@ -16,7 +16,7 @@ class KeyHandler
         Key.keyPressed[e.keyCode] = true
         if(Key.active){
             if( Key.upListener.hasOwnProperty(e.keyCode) ){
-                Key.upListener[e.keyCode]()
+                Key.upListener[e.keyCode](e)
             }
         }
         // console.log(e.keyCode)

@@ -1,4 +1,5 @@
-// import 
+import Storage from './../LocalStorage.js'
+
 let editingCurve = false
 
 let initialPosition = {x:null, y:null}
@@ -29,6 +30,10 @@ const pointerMove = (e)=>{
         curvePosition.x, curvePosition.y,
         endPosition.x, endPosition.y
         );
+    let curve = [initialPosition.x, initialPosition.y, 
+        curvePosition.x, curvePosition.y,
+        endPosition.x, endPosition.y]
+    Storage.setLocal('curve', curve)
     ctx.stroke();
     e.preventDefault()
     e.stopPropagation()
@@ -51,6 +56,23 @@ pppointer.style.position = 'fixed'
 pppointer.style.zIndex = 10
 pppointer.style.display = 'none'
 
+let p1 = document.createElement('div')
+// p1.classList.add('pointer')
+p1.style.margin = '-.25em'
+// p1.style.border = '1.5px solid yellow'
+p1.style.backgroundColor = '#00FF00'
+p1.style.borderRadius = '50%'
+p1.style.width = '.5em'
+p1.style.height = '.5em'
+p1.style.position = 'fixed'
+p1.style.zIndex = 10
+p1.style.left = '100px'
+p1.style.top = '100px'
+
+
+
+
+
 let canvas = null
 let ctx = null
 
@@ -59,6 +81,7 @@ export default class Canvas
 {
     constructor(){
         document.body.appendChild(pppointer)
+        document.body.appendChild(p1)
         canvas = document.querySelector('canvas')
         ctx = canvas.getContext("2d");
         console.log(canvas)
@@ -88,6 +111,10 @@ export default class Canvas
             coordinates.x, coordinates.y
             );
         ctx.stroke();
+        let curve = [initialPosition.x, initialPosition.y, 
+            coordinates.x, coordinates.y,
+            coordinates.x, coordinates.y]
+        Storage.setLocal('curve', curve)
     }
     up(coordinates){
         pppointer.style.left = endPosition.x+'px'

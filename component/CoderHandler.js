@@ -29,13 +29,26 @@ class CoderHandler
         
     }
     start(current){
-        this.json = {
-            x:current.style.left.replace('px',''),
-            y:current.style.top.replace('px',''),
-            content:current.innerText,
-            id:current.id,
-            size:current.style.fontSize.replace('px','')
+        if(current.tagName.toLowerCase() !== 'canvas'){
+            this.json = {
+                x:current.style.left.replace('px',''),
+                y:current.style.top.replace('px',''),
+                content:current.innerText,
+                id:current.id,
+                size:current.style.fontSize.replace('px','')
+            }
+        } else {
+            let coordinates = JSON.parse(current.getAttribute('coordinates'))
+            this.json = {
+                x:coordinates[0],
+                y:coordinates[1],
+                content:current.getAttribute('coordinates'),
+                id:current.id,
+                size:'gr'
+            }
         }
+
+        
         let elements = Insert.start(this.json)
         Console.setData(this.json)
         // console.log(elements)

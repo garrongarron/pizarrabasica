@@ -47,6 +47,7 @@ class InputHandler
             this.current = document.createElement('span')
             this.current.id = Math.round(new Date().getTime()/100);
             this.current.style.fontSize = Font.getSize()+'px'
+            this.current.style.lineHeight = Font.getSize()+'px'
             this.current.style.color = 'white'
           
             

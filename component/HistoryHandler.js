@@ -3,6 +3,7 @@ import Key from './KeyHandler.js'
 import Coder from './CoderHandler.js'
 import Element from './DomElementHandler.js'
 import Input from './InputHandler.js'
+import graphics from './Graphics.js'
 
 class HistoryHandler
 {
@@ -57,29 +58,41 @@ class HistoryHandler
         Storage.setLocal('history',history);
     }
    
-    back(){
+    back(e){
         if(Key.keyPressed[17]!== true){//control
             return
         }
         History.prev()
+        e.preventDefault()
+        e.stopPropagation()
     }
     prev(){
 
         if(History.cursor<0){
             return
         }
-        let arr = Object.entries(Storage.getLocal('history'))
-        let id = `[id='${arr[History.cursor--][0]}']`
-        let element = document.querySelector(id)
         Input.input.value = ''
-        element.remove();
+        let arr = Object.entries(Storage.getLocal('history'))
+        let cursor = History.cursor--
+        let size = arr[cursor][1].size || null
+        if(size == 'gr'){
+            graphics.remove(arr[cursor][0])
+        } else {
+            let id = `[id='${arr[cursor][0]}']`
+            let element = document.querySelector(id)
+            
+            element.remove();
+        }
     }
 
-    ahead(){
+    ahead(e){
+        
         if(Key.keyPressed[17]!== true){//control
             return
         }
         History.next()
+        e.preventDefault()
+        e.stopPropagation()
     }
 
     next(){
@@ -88,17 +101,24 @@ class HistoryHandler
             return
         }
         let arr = Object.entries(HISTORY)
-        let element = document.createElement('span')
-        element.innerText = arr[++History.cursor][1].content
-        Input.input.value = element.innerText
-        element.id = arr[History.cursor][0]
-        element.style.left = arr[History.cursor][1].x+'px'
-        element.style.top = arr[History.cursor][1].y+'px' 
-        element.style.color = 'white' 
-        let size = arr[History.cursor][1].size || 15
-        element.style.fontSize = size+'px'  
-        document.body.appendChild(element)
-        Element.addClickListener(element)
+        let cursor = ++History.cursor
+        let size = arr[cursor][1].size || null
+        if(size == 'gr'){
+            graphics.add(JSON.parse(arr[cursor][1].content))
+        } else {
+            let element = document.createElement('span')
+            element.innerText = arr[cursor][1].content
+            Input.input.value = element.innerText
+            element.id = arr[cursor][0]
+            element.style.left = arr[cursor][1].x+'px'
+            element.style.top = arr[cursor][1].y+'px' 
+            element.style.color = 'white' 
+            
+            element.style.fontSize = size+'px'
+            element.style.lineHeight = size+'px'
+            document.body.appendChild(element)
+            Element.addClickListener(element)
+        }
     }
 
     start(){
