@@ -1,7 +1,8 @@
 import Helper from './Graphics/GraphicHelper.js'
 import Storage from './LocalStorage.js'
 import Coder from './CoderHandler.js'
-
+import History from './HistoryHandler.js'
+import Key from './KeyHandler.js'
 
 class Graphics
 {
@@ -67,22 +68,80 @@ class Graphics
             }
         }
     }
+    refresh(){
+        let arr = Object.entries(Storage.getLocal('history'))
+        let cursor = History.cursor
+        let historyId = arr[cursor][0]
+        let canvas = graphics.getCanvas()
+        let ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let object = Storage.getLocal('history')
+        for (const key in object) {
+            if (object.hasOwnProperty(key)) {
+                const element = object[key];
+                if(element.size == 'gr'){
+                    if(element.id == historyId){
+                        graphics.add(JSON.parse(element.content))
+                        break;
+                    } else {
+                        graphics.add(JSON.parse(element.content))
+                    }
+                }
+            }
+        }
+    }
     pixelOnMouseOver(){
         let canvas = graphics.getCanvas()
-        canvas.addEventListener('click',function(e){
+        canvas.addEventListener('mousedown',function(e){
             let ctx = canvas.getContext("2d");
             let data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
             let idx = (e.offsetY*canvas.width + e.offsetX)*4;
             let parts = Array.prototype.slice.call(data,idx,idx+4);
             if(parts[0]>10){
                 let object = Storage.getLocal('history')
-                let id = graphics.getId(idx)
+                let historyId = graphics.getHistoryId(idx)
+                if(Key.keyPressed[8]== true){//control
+                    History.delete({id:historyId})
+                    History.cursor--
+                    graphics.refresh()
+                    return
+                }
                 
-                console.log(JSON.parse(object[id].content))
+                graphics.setPointers(JSON.parse(object[historyId].content), historyId)
+                
             }
         },false);
     }
-    getId(idx){
+
+    setPointers(coordinates, historyId){
+        let pList = []
+        for (let index = 1; index <= 3; index++) {
+            pList[index] = document.querySelector('[id=p'+index+']')
+            pList[index].style.left = coordinates[(index-1)*2]+'px'
+            pList[index].style.top = coordinates[(index-1)*2+1]+'px'
+            pList[index].setAttribute('historyId', historyId)
+        }
+        graphics.addTmp(coordinates)
+    }
+    addTmp(coordinates){
+        let canvas = document.querySelector('[id=canvasTpm]')
+        canvas.style.display = 'block'
+        setTimeout(()=>{
+            canvas.style.display = 'none'
+        },500)
+        let ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = 'rgba(255, 0, 255, 1)'
+        ctx.lineWidth = 2
+        ctx.beginPath();
+        ctx.bezierCurveTo(
+            coordinates[0],coordinates[1],
+            coordinates[2],coordinates[3],
+            coordinates[4],coordinates[5]
+            );      
+        ctx.stroke();
+    }
+    getHistoryId(idx){
         let canvas = document.querySelector('[id=canvasTpm]')
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -94,14 +153,14 @@ class Graphics
             if (object.hasOwnProperty(key)) {
                 const element = object[key];
                 if(element.size == 'gr'){
-                   if(graphics.addTmp(JSON.parse(element.content), idx, ctx, canvas.width, canvas.height )){
+                   if(graphics.findId(JSON.parse(element.content), idx, ctx, canvas.width, canvas.height )){
                        return element.id
                     }
                 }
             }
         }
     }
-    addTmp(coordinates, idx, ctx, w, h){
+    findId(coordinates, idx, ctx, w, h){
         ctx.beginPath();
         ctx.bezierCurveTo(
             coordinates[0],coordinates[1],

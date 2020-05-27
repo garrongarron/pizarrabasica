@@ -1,5 +1,6 @@
 import Canvas from './Canvas.js'
 
+
 class GraphicHelper
 {
     constructor(){

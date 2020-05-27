@@ -36,7 +36,7 @@ class MouseHandler
         if (Mouse.upSubscriber== null) {
             return
         } else {
-            Mouse.upSubscriber()
+            Mouse.upSubscriber(e)
         }
     }
 
@@ -44,7 +44,7 @@ class MouseHandler
         if (Mouse.downSubscriber== null) {
             return
         } else {
-            Mouse.downSubscriber()
+            Mouse.downSubscriber(e)
         }
     }
 
@@ -63,7 +63,7 @@ class MouseHandler
         if (Mouse.moveSubscriber== null) {
             return
         } else {
-            Mouse.moveSubscriber()
+            Mouse.moveSubscriber(e)
         }
         
         // console.log(e.target.innerText)

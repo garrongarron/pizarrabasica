@@ -46,6 +46,7 @@ class CoderHandler
                 id:current.id,
                 size:'gr'
             }
+            current.remove()
         }
 
         

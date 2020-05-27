@@ -1,4 +1,6 @@
 import Storage from './../LocalStorage.js'
+import Mouse from './../MouseHandler.js'
+import graphics from './../Graphics.js'  //I dont like this because it call helper and that call this
 
 let editingCurve = false
 
@@ -56,18 +58,73 @@ pppointer.style.position = 'fixed'
 pppointer.style.zIndex = 10
 pppointer.style.display = 'none'
 
-let p1 = document.createElement('div')
-// p1.classList.add('pointer')
-p1.style.margin = '-.25em'
-// p1.style.border = '1.5px solid yellow'
-p1.style.backgroundColor = '#00FF00'
-p1.style.borderRadius = '50%'
-p1.style.width = '.5em'
-p1.style.height = '.5em'
-p1.style.position = 'fixed'
-p1.style.zIndex = 10
-p1.style.left = '100px'
-p1.style.top = '100px'
+
+let editing = false
+
+let mousedown = (e) => {
+    editing = true
+    let target = e.target
+    Mouse.setMoveSubscriber((e) => {
+        let coordinates = updateHistory(e, target)
+        refreshCurve(coordinates)
+    })
+    Mouse.setUpSubscriber(()=>{
+        editing = false
+        Mouse.setMoveSubscriber(null)
+        graphics.refresh()
+        document.querySelector('[id=canvasTpm]').style.display = 'none'
+    })
+}
+
+let refreshCurve = (coordinates) => {
+    let canvas = document.querySelector('[id=canvasTpm]')
+    canvas.style.display = 'block'
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(255, 0, 255, 1)'
+    ctx.lineWidth = 2
+    ctx.beginPath();
+    ctx.bezierCurveTo(
+        coordinates[0],coordinates[1],
+        coordinates[2],coordinates[3],
+        coordinates[4],coordinates[5]
+        );      
+    ctx.stroke();
+}
+
+let updateHistory = (e, target) => {
+    console.log(e)
+    if(!editing){
+        return
+    }
+    let historyId = target.getAttribute('historyId')
+    target.style.left = e.clientX+'px'
+    target.style.top = e.clientY+'px'
+    let object = Storage.getLocal('history')
+    let coordinates = JSON.parse(object[historyId].content)
+    let subIndex = target.id.replace('p','')*1-1
+    coordinates[subIndex*2] = e.clientX
+    coordinates[subIndex*2+1] = e.clientY
+    object[historyId].content = JSON.stringify(coordinates)
+    Storage.setLocal('history',object)
+    return coordinates
+}
+
+let pList = []
+for (let index = 1; index <= 3; index++) {
+    pList[index] = document.createElement('div')
+    pList[index].id = 'p'+index
+    pList[index].style.margin = '-.25em'
+    pList[index].style.backgroundColor = '#00FF00'
+    pList[index].style.borderRadius = '50%'
+    pList[index].style.width = '.5em'
+    pList[index].style.height = '.5em'
+    pList[index].style.position = 'fixed'
+    pList[index].style.zIndex = 10
+    pList[index].style.left = '1'+index+'0px'
+    pList[index].style.top = '1'+index+'0px'
+    pList[index].addEventListener('mousedown', mousedown)
+}
 
 
 
@@ -81,7 +138,9 @@ export default class Canvas
 {
     constructor(){
         document.body.appendChild(pppointer)
-        document.body.appendChild(p1)
+        document.body.appendChild(pList[1])
+        document.body.appendChild(pList[2])
+        document.body.appendChild(pList[3])
         canvas = document.querySelector('canvas')
         ctx = canvas.getContext("2d");
         console.log(canvas)
