@@ -52,7 +52,6 @@ class MouseHandler
         let scroll = Scroll.getScroll()
         Mouse.cursor.x += scroll.x 
         Mouse.cursor.y += scroll.y 
-        
     }
     
     move(e){
